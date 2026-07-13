@@ -1,0 +1,19 @@
+# A Happy Host, LLC
+
+> Family-owned short-term rental (STR) concierge company serving Sevierville, Pigeon Forge, and Gatlinburg in the Great Smoky Mountains of Tennessee. Services for rental owners include cabin setup, rental inspections, seasonal decorating, photo staging, and handyman services; guests can book proposals, in-home chefs, and special-occasion experiences through "A Happy Guest."
+
+- Office: 902 McMakin Way, Pigeon Forge, TN 37863
+- Phone: 865-314-7564 (Mon-Fri 9:00am-5:00pm; emergencies 24/7)
+- Email: services@ahappyhostgsm.com
+
+## Pages
+
+- [Home](https://www.ahappyhost.com/): Overview of concierge services for rental owners and guests
+- [About](https://www.ahappyhost.com/about): Family-owned story of Amy and Ricky Shaver, trusted by 700+ STR clients
+- [Contact](https://www.ahappyhost.com/contact): Contact form, department emails, phone, and office address
+- [Cabin Setup](https://www.ahappyhost.com/cabinsetup): Take a rental from empty to guest-ready in less than a week
+- [Rental Inspections](https://www.ahappyhost.com/rental-inspections): Monthly walkthrough inspections covering plumbing, electrical, appliances, HVAC
+- [Seasonal Decorating](https://www.ahappyhost.com/seasonal-decorating): Year-round seasonal decor installed and stored for you
+- [Photo Staging](https://www.ahappyhost.com/photo-staging): Staging rentals for listing photos that drive bookings
+- [Handyman Services](https://www.ahappyhost.com/handyman-services): Scheduled repairs and maintenance for rental properties
+- [A Happy Guest](https://www.ahappyhost.com/a-happy-guest): Guest experiences — proposals, chef services, special occasions

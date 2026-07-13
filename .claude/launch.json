@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ahappyhost",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "-l", "8901", "/Users/franklin/Downloads/ahappyhost"],
+      "port": 8901
+    }
+  ]
+}

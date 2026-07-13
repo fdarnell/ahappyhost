@@ -1,0 +1,32 @@
+{
+  "business_name": "A Happy Host, LLC",
+  "phone": "865-314-7564",
+  "phone_tel": "+18653147564",
+  "email": "services@ahappyhostgsm.com",
+  "department_emails": {
+    "general": "services@ahappyhostgsm.com",
+    "inspections": "inspections@ahappyhostgsm.com",
+    "concierge": "concierge@ahappyhostgsm.com",
+    "decorating": "decor@ahappyhostgsm.com"
+  },
+  "address": {
+    "street": "902 McMakin Way",
+    "city": "Pigeon Forge",
+    "state": "TN",
+    "zip": "37863"
+  },
+  "geo": { "lat": 35.802524, "lng": -83.5228981 },
+  "hours": {
+    "mon_fri": "9:00 am - 5:00 pm",
+    "sat_sun": "Closed",
+    "emergencies": "Open 24/7"
+  },
+  "service_area": ["Sevierville", "Pigeon Forge", "Gatlinburg", "Sevier County TN"],
+  "social": {
+    "facebook": "https://facebook.com/AHappyHost",
+    "tiktok": "https://www.tiktok.com/@a_happy_host",
+    "instagram": "https://instagram.com/a_happy_host",
+    "youtube": "https://youtube.com/@A_Happy_Host",
+    "google": "https://www.google.com/maps/place/A+Happy+Host/@35.802524,-83.5228981,17z"
+  }
+}
