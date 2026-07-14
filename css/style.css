@@ -248,20 +248,35 @@ h1, h2, h3, h4 { font-family: var(--heading); font-weight: 400; line-height: 1.2
   background-position: center;
   text-decoration: none;
   padding: 18px 22px;
+  overflow: hidden;
 }
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  background-size: cover;
+  background-position: center;
+}
+.service-card:hover::before,
+.service-card:focus-visible::before { transform: scale(1.06); }
 .service-card h3 {
+  position: relative;
   font-size: 34px;
   font-weight: 800;
   color: #000;
 }
 .service-card p {
+  position: relative;
   font-family: var(--heading);
   font-size: 20px;
   font-weight: 700;
   color: #fff;
   max-width: 520px;
 }
-.service-card:hover h3 { text-decoration: underline; }
+@media (prefers-reduced-motion: no-preference) {
+  .service-card::before { transition: transform 0.4s ease; }
+}
 
 .checklist { text-align: center; }
 .checklist-sub { font-family: var(--heading); font-size: 17px; color: var(--muted); margin-bottom: 14px; }
