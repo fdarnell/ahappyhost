@@ -5,6 +5,7 @@ Every page shares one header/nav/footer defined here, so chrome can never
 drift between pages. Run `python3 scripts/build.py` from the repo root after
 editing; it rewrites the HTML files in place.
 """
+import hashlib
 import json
 import os
 import pathlib
@@ -13,6 +14,15 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://www.ahappyhost.com"
 
 CFG = json.loads((ROOT / "site.config.json").read_text())
+
+
+def asset_hash(relpath):
+    """Short content hash so cache-busted URLs change whenever the file does."""
+    return hashlib.md5((ROOT / relpath).read_bytes()).hexdigest()[:10]
+
+
+CSS_V = asset_hash("css/style.css")
+JS_V = asset_hash("js/main.js")
 PHONE = CFG["phone"]
 PHONE_TEL = CFG["phone_tel"]
 EMAIL = CFG["email"]
@@ -126,9 +136,9 @@ def head(title, desc, path, jsonld_extra=""):
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/fonts/InterTight-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/style.css?v={CSS_V}">
 <script type="application/ld+json">{json.dumps(biz, separators=(",", ":"))}</script>
-{jsonld_extra}<script src="/js/main.js" defer></script>
+{jsonld_extra}<script src="/js/main.js?v={JS_V}" defer></script>
 </head>
 <body>
 """
