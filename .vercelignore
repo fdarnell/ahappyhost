@@ -1,0 +1,7 @@
+scripts/
+site.config.json
+content-plan.md
+seo-baseline/
+_research/
+README.md
+.gitignore
