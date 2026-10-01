@@ -277,6 +277,8 @@ def cta_band(learn_href="/about", contact_label="Contact"):
       </div>"""
 
 
+from legal_pages import LEGAL_PAGES
+
 PAGES = {}
 
 # =============================================================== HOME
@@ -1042,6 +1044,21 @@ PAGES["404.html"] = dict(
 )
 
 
+# =============================================================== LEGAL / POLICY
+# Transcribed from the live Duda site so the rebuild publishes the same
+# handbook, agreements and policies the client already has online.
+for _slug, _pg in LEGAL_PAGES.items():
+    _fname = "nda/non-compete.html" if _slug == "nda-non-compete" else f"{_slug}.html"
+    PAGES[_fname] = dict(
+        title=_pg["title"],
+        desc=_pg["desc"],
+        path=_pg["path"],
+        active="",
+        jsonld="",
+        body=_pg["body"],
+    )
+
+
 def build():
     titles, descs = set(), set()
     for fname, page in PAGES.items():
@@ -1056,7 +1073,9 @@ def build():
             + page["body"]
             + footer()
         )
-        (ROOT / fname).write_text(html)
+        out_path = ROOT / fname
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(html)
         print(f"wrote {fname} ({len(html)} bytes)")
 
     # sitemap.xml

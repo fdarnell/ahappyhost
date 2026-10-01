@@ -5,17 +5,64 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     },
     {
       "source": "/(images|fonts|css|js)/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/copy-of-handbook",
+      "destination": "/handbook",
+      "permanent": true
+    },
+    {
+      "source": "/copy-of-handbook1c9dfdbc",
+      "destination": "/handbook",
+      "permanent": true
+    },
+    {
+      "source": "/nda/copy-of-nda/non-compete",
+      "destination": "/nda/non-compete",
+      "permanent": true
+    },
+    {
+      "source": "/copy-of-terms-and-conditions",
+      "destination": "/terms-and-condition",
+      "permanent": true
+    },
+    {
+      "source": "/onboarding",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap",
+      "destination": "/sitemap.xml",
+      "permanent": true
     }
   ]
 }
