@@ -259,7 +259,7 @@ def footer():
   </div>
   <div class="footer-bottom">
     <div class="container footer-bottom-grid">
-      <address style="font-style:normal">&copy; 2026 All Rights Reserved | A Happy Host, LLC &middot; 902 McMakin Way, Pigeon Forge, TN 37863 &middot; <a href="tel:{PHONE_TEL}">{PHONE}</a></address>
+      <address style="font-style:normal">&copy; 2026 All Rights Reserved | A Happy Host, LLC</address>
       <p>Please Report Errors to the <a href="mailto:{EMAIL}">Webmaster</a></p>
     </div>
   </div>
@@ -311,35 +311,6 @@ PAGES["index.html"] = dict(
     <div class="container">
       <h2 class="label-h">We're glad you're here.</h2>
       <p>Welcome to A Happy Host, the #1 concierge company for Sevierville, Gatlinburg, Pigeon Forge and surrounding. We are your go to concierge service located in the heart of the Smoky Mountains. We are here to enhance your rental experience, providing personalized attention and top-notch service to ensure your property and guests receive world class care. Our dedicated team is here to provide you with unparalleled support and assistance. From <a href="/seasonal-decorating">seasonal decorating</a> to <a href="/handyman-services">handyman services</a> we are here to assist with local resources for taking care of your needs. Our dedicated team is committed to making your concierge experience stress-free and delightful. As locals with a passion for hospitality, we strive to offer exceptional care and expertise to make sure your guests' visit to the Smokies is unforgettable. Let us be your team for all your rental property needs!</p>
-    </div>
-  </section>
-
-  <section aria-label="Our services">
-    <div class="service-cards">
-      <a class="service-card" href="/photo-staging" style="background-image:url('/images/card-photo-staging.jpg')">
-        <h3>Photo Staging</h3>
-        <p>Let the guest see themselves in your home before they even arrive.</p>
-      </a>
-      <a class="service-card" href="/rental-inspections" style="background-image:url('/images/card-rental-inspections.jpg')">
-        <h3>Rental Inspections</h3>
-        <p>Self Managing? Get a monthly inspection for less than one night's refund to your guest.</p>
-      </a>
-      <a class="service-card" href="/seasonal-decorating" style="background-image:url('/images/card-seasonal-decorating.jpg')">
-        <h3>Seasonal Decorating</h3>
-        <p>Where creativity meets expertise to elevate your property's appeal throughout the year.</p>
-      </a>
-      <a class="service-card" href="/cabinsetup" style="background-image:url('/images/card-cabin-setup.jpg')">
-        <h3>Cabin Setup</h3>
-        <p>Take your rental from empty to ready in less than a week.</p>
-      </a>
-      <a class="service-card" href="/handyman-services" style="background-image:url('/images/card-handyman.jpg')">
-        <h3>Handyman Services</h3>
-        <p>There's always something...and we always have someone for the job.</p>
-      </a>
-      <a class="service-card" href="/a-happy-guest" style="background-image:url('/images/card-happy-guest.jpg')">
-        <h3>A Happy Guest</h3>
-        <p>Are you a guest staying at a rental? Click to see all the special arrangments we can make for you!</p>
-      </a>
     </div>
   </section>
 
@@ -535,7 +506,8 @@ PAGES["contact.html"] = dict(
       </form>
     </div>
     <div class="container">
-      <p class="form-note">*By providing your phone number, you agree to receive SMS messages from A Happy Host. Message frequency varies. Message &amp; data rates may apply. Reply STOP to opt out. See our <a href="/tos">terms of service (TOS)</a> for details.</p>
+      <label class="form-consent"><input type="checkbox" name="consent" value="yes"> I agree to receive calls, text messages, and emails from A Happy Host regarding my inquiry and requested services.</label>
+      <p class="form-note">*For information about how A Happy Host communicates with you and handles your information, please review our <a href="/terms-and-condition">Terms of Service</a> and <a href="/privacy-policy">Privacy Policies</a>.</p>
     </div>
   </section>
 
@@ -544,10 +516,9 @@ PAGES["contact.html"] = dict(
       <div class="contact-card">
         {ICONS["envelope"]}
         <h3>Email Contact</h3>
-        <p>General Inquiries<br><a href="mailto:{EMAIL}">{EMAIL}</a></p>
-        <p>Inspections<br><a href="mailto:inspections@ahappyhostgsm.com">inspections@ahappyhostgsm.com</a></p>
-        <p>Concierge Services<br><a href="mailto:concierge@ahappyhostgsm.com">concierge@ahappyhostgsm.com</a></p>
-        <p>Seasonal Decorating<br><a href="mailto:decor@ahappyhostgsm.com">decor@ahappyhostgsm.com</a></p>
+        <p>General Inquiries :<br><a href="mailto:{EMAIL}">{EMAIL}</a></p>
+        <p>Inspections :<br><a href="mailto:inspections@ahappyhostgsm.com">inspections@ahappyhostgsm.com</a></p>
+        <p>Seasonal Decorating :<br><a href="mailto:decor@ahappyhostgsm.com">decor@ahappyhostgsm.com</a></p>
       </div>
       <div class="contact-card">
         {ICONS["phone"]}
