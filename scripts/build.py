@@ -490,23 +490,14 @@ PAGES["contact.html"] = dict(
         <p>Ready to have a better, more impactful rental experience? Setting up an account is quick and easy. Our team is ready to take your call.</p>
         <p style="margin-top:16px">Your new and improved rental support program is a form away!</p>
       </div>
-      <form class="contact-form" action="#" method="post" novalidate>
-        <h2 class="visually-hidden" style="position:absolute;left:-9999px">Contact Us</h2>
-        <label for="f-name">Full Name</label>
-        <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Enter your full name">
-        <label for="f-email">Email</label>
-        <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="Enter your email">
-        <label for="f-phone">Phone Number</label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+123">
-        <label for="f-message">Message</label>
-        <textarea id="f-message" name="message" required placeholder="Tell us a bit about your needs"></textarea>
-        <button class="btn btn-dark" type="submit">Submit</button>
-        <p class="form-status ok" role="status">Thank you for contacting us. We will get back to you as soon as possible.</p>
-        <p class="form-status err" role="alert">Oops, there was an error sending your message. Please try again later.</p>
-      </form>
+      <!-- Salt CRM form (Salt Services tenant, slug "ahappyhost"). Fields,
+           labels, placeholders, required flags and the consent wording were
+           read off the live Duda form, so this renders what visitors see
+           today. Created by salt-crm/scripts/import-ahappyhost-form.mjs. -->
+      <div data-saltcrm-form="XmBnFY_S4ksXijQGIBO4-Q"></div>
+      <script src="https://crm.saltservicesusa.com/api/embed/XmBnFY_S4ksXijQGIBO4-Q" async></script>
     </div>
     <div class="container">
-      <label class="form-consent"><input type="checkbox" name="consent" value="yes"> I agree to receive calls, text messages, and emails from A Happy Host regarding my inquiry and requested services.</label>
       <p class="form-note">*For information about how A Happy Host communicates with you and handles your information, please review our <a href="/terms-and-condition">Terms of Service</a> and <a href="/privacy-policy">Privacy Policies</a>.</p>
     </div>
   </section>
