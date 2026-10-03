@@ -596,7 +596,6 @@ footer.site-footer { background: #fff; margin-top: 64px; }
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 1024px) {
-  .hero-strip-grid { grid-template-columns: 1fr 1fr; }
   .checklist-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
   .review-grid { grid-template-columns: 1fr; }
