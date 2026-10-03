@@ -108,6 +108,28 @@ def render(bl):
     return "\n".join(out)
 
 
+# Header/footer text that is not part of a document even when it survives the
+# cross-page chrome test. Without this the body started at "Contact Us" and the
+# real title ("Privacy Policy - A Happy Host LLC") was demoted to a paragraph.
+EDGE_NOISE = re.compile(
+    r"^(contact us|get in touch|home|about|services|sitemap|accessibility|tos|menu|"
+    r"happy guest|a happy guest|business hours|navigation|"
+    r"mon ?- ?fri.*|sat ?- ?sun.*|emergencies.*|phone:.*|"
+    r"click here if you.*|let.s stay connected.*|please report errors.*|"
+    r"all rights reserved.*|\u00a9.*|865[-. ]?314[-. ]?7564|[\w.+-]+@[\w.-]+)$",
+    re.I)
+
+
+def trim_edges(bl):
+    """Drop header/footer noise from the start and end, never from the middle."""
+    i, j = 0, len(bl)
+    while i < j and EDGE_NOISE.match(bl[i][1].strip()):
+        i += 1
+    while j > i and EDGE_NOISE.match(bl[j - 1][1].strip()):
+        j -= 1
+    return bl[i:j]
+
+
 raw = {slug: blocks(fetch(path)) for slug, path in PAGES.items()}
 raw["_ref"] = blocks(fetch(CHROME_REF))
 
@@ -131,7 +153,7 @@ for slug, bl in raw.items():
         continue
     idx = [i for i, (_, t) in enumerate(bl) if t not in chrome]
     lo, hi = min(idx), max(idx)
-    body_blocks = bl[lo:hi + 1]          # keep chrome strings that fall INSIDE the body
+    body_blocks = trim_edges(bl[lo:hi + 1])   # keep chrome strings INSIDE the body, drop edge noise
     title, desc, path = META[slug]
     parts.append(f'''
 LEGAL_PAGES["{slug}"] = dict(

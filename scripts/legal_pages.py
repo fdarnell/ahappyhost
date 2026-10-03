@@ -13,11 +13,7 @@ LEGAL_PAGES["handbook"] = dict(
     body="""<main class="legal">
   <section class="legal-body">
     <div class="container">
-    <h1>Contact Us</h1>
-    <h2>Get in touch</h2>
-    <p>865-314-7564</p>
-    <p>services@ahappyhostgsm.com</p>
-    <h2>A HAPPY HOST COMPANY HANDBOOK &amp; POLICIES EFFECTIVE DATE: OCTOBER 23, 2025</h2>
+    <h1>A HAPPY HOST COMPANY HANDBOOK &amp; POLICIES EFFECTIVE DATE: OCTOBER 23, 2025</h1>
     <p>Effective Date: December 18, 2025</p>
     <p>Company policies are established to ensure professionalism, consistency, and protection of the company, its clients, and its contractors and employees. This Handbook sets general standards and expectations but does not control or dictate the means, methods, or manner by which independent contractors perform their services. These policies apply equally to all independent contractors and employees unless otherwise specified.</p>
     <p>Disagreement with a policy does not excuse noncompliance. Concerns may be raised privately with management. Public disagreement, divisive conduct, or actions that undermine trust or morale are not permitted.</p>
@@ -99,11 +95,7 @@ LEGAL_PAGES["nda-non-compete"] = dict(
     body="""<main class="legal">
   <section class="legal-body">
     <div class="container">
-    <h1>Contact Us</h1>
-    <h2>Get in touch</h2>
-    <p>865-314-7564</p>
-    <p>services@ahappyhostgsm.com</p>
-    <p>Non-Disclosure Agreement (NDA) &amp; Non-Compete</p>
+    <h1>Non-Disclosure Agreement (NDA) &amp; Non-Compete</h1>
     <p>Effective 12/18/2025</p>
     <h2>B ETWEEN</h2>
     <p>A Happy Host, LLC</p>
@@ -171,11 +163,7 @@ LEGAL_PAGES["terms-and-condition"] = dict(
     body="""<main class="legal">
   <section class="legal-body">
     <div class="container">
-    <h1>Contact Us</h1>
-    <h2>Get in touch</h2>
-    <p>865-314-7564</p>
-    <p>services@ahappyhostgsm.com</p>
-    <p>Terms and Conditions / Service Agreement</p>
+    <h1>Terms and Conditions / Service Agreement</h1>
     <p>A Happy Host, LLC Effective Date: May 7, 2026</p>
     <h2>Overview</h2>
     <p>By requesting, scheduling, authorizing, or using services from A Happy Host, LLC (“A Happy Host,” “AHH,” “we,” “us,” or “our”), the client, homeowner, property owner, authorized representative, or guest requesting service (“Client,” “Owner,” or “you”) agrees to the following Terms &amp; Conditions / Service Agreement.</p>
@@ -405,11 +393,7 @@ LEGAL_PAGES["privacy-policy"] = dict(
     body="""<main class="legal">
   <section class="legal-body">
     <div class="container">
-    <h1>Contact Us</h1>
-    <h2>Get in touch</h2>
-    <p>865-314-7564</p>
-    <p>services@ahappyhostgsm.com</p>
-    <p>Privacy Policy – A Happy Host LLC</p>
+    <h1>Privacy Policy – A Happy Host LLC</h1>
     <h2>Effective Date: 7/4/2025</h2>
     <h2>A Happy Host LLC ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, store, and protect your personal information. By using our services, you agree to the terms of this policy.</h2>
     <h2>1. Information We Collect</h2>
@@ -492,11 +476,7 @@ LEGAL_PAGES["service-rate-update-2025"] = dict(
     body="""<main class="legal">
   <section class="legal-body">
     <div class="container">
-    <h1>Contact Us</h1>
-    <h2>Get in touch</h2>
-    <p>865-314-7564</p>
-    <p>services@ahappyhostgsm.com</p>
-    <p>Service Update – Effective Oct 15, 2025</p>
+    <h1>Service Update – Effective Oct 15, 2025</h1>
     <p>A Happy Host, LLC</p>
     <p>902 McMakin way, Pigeon Forge, TN 37876</p>
     <p>Email: services@ahappyhostgsm.com | Phone: (865) 314-7564</p>
