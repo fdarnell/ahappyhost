@@ -526,6 +526,56 @@ h1, h2, h3, h4 { font-family: var(--heading); font-weight: 400; line-height: 1.2
 .contact-form textarea:focus { outline: 2px solid var(--aqua); border-color: var(--aqua); }
 .contact-form textarea { min-height: 130px; resize: vertical; }
 .contact-form .btn { margin-top: 26px; }
+
+/* The Salt CRM embed ships unstyled markup and leaves the look to the host
+   page, so it gets the same treatment the hand-built form above had. */
+.saltcrm-form .saltcrm-field { display: block; }
+.saltcrm-form .saltcrm-field > span {
+  display: block;
+  font-family: var(--heading);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 20px 0 6px;
+}
+.saltcrm-form .saltcrm-field:first-child > span { margin-top: 0; }
+.saltcrm-form input:not([type="checkbox"]),
+.saltcrm-form textarea {
+  display: block;
+  width: 100%;
+  font-family: var(--body);
+  font-size: 16px;
+  padding: 13px 16px;
+  border: 1px solid #b9beba;
+  border-radius: 8px;
+  background: #fff;
+}
+.saltcrm-form input:focus,
+.saltcrm-form textarea:focus { outline: 2px solid var(--aqua); border-color: var(--aqua); }
+.saltcrm-form textarea { min-height: 130px; resize: vertical; }
+.saltcrm-form .saltcrm-consent {
+  display: flex; gap: .6rem; align-items: flex-start;
+  margin-top: 22px; font-size: 14px; line-height: 1.5; color: var(--muted);
+}
+.saltcrm-form .saltcrm-consent input { margin-top: .3rem; flex: 0 0 auto; width: 16px; height: 16px; }
+.saltcrm-form .saltcrm-errors { margin: 16px 0 0; color: #a41623; font-weight: 600; }
+.saltcrm-form .saltcrm-submit {
+  display: inline-block;
+  margin-top: 26px;
+  font-family: var(--heading);
+  font-weight: 700;
+  font-size: 17px;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 44px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.saltcrm-form .saltcrm-submit:hover { opacity: 0.85; }
+.saltcrm-form .saltcrm-submit:disabled { opacity: 0.6; cursor: wait; }
+.saltcrm-thanks { padding: 24px; border-radius: 8px; background: #eef8f8; color: #1b6b40; font-weight: 600; }
 .form-note { font-size: 13.5px; color: var(--muted); margin-top: 34px; text-align: center; }
 .form-status { margin-top: 18px; font-weight: 600; display: none; }
 .form-status.ok { color: #1b6b40; }
