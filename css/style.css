@@ -726,7 +726,7 @@ footer.site-footer { background: #fff; margin-top: 64px; }
    comparison table, FAQ and the CRM form at the foot. Body text here uses
    --ink-soft rather than --muted so it clears 4.5:1 on mint and white. */
 :root { --ink-soft: #3d4441; }
-.page-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 56px 0 40px; }
+.page-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding-block: 56px 40px; }
 .page-hero h1 { font-size: clamp(30px, 4.2vw, 46px); font-weight: 700; line-height: 1.12; margin-bottom: 18px; }
 .page-hero .lede { font-size: 19px; color: var(--ink-soft); margin-bottom: 16px; }
 .page-hero .byline { font-size: 15px; color: var(--ink-soft); margin-bottom: 22px; }
