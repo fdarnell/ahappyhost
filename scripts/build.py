@@ -230,6 +230,8 @@ def footer():
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/contact">Contact</a></li>
+          <li><a href="/gatlinburg">Gatlinburg cabin owners</a></li>
+          <li><a href="/blog">Blog</a></li>
           <li><a href="/accessibility">Accessibility</a></li>
           <li><a href="/tos">TOS</a></li>
           <li><a href="/sitemap.xml">Sitemap</a></li>
@@ -275,6 +277,78 @@ def cta_band(learn_href="/about", contact_label="Contact"):
         <a class="btn btn-aqua" href="/contact#GetStarted">{contact_label}</a>
         <a class="btn btn-outline" href="{learn_href}">Learn more</a>
       </div>"""
+
+
+# ------------------------------------------------- guide / town page helpers
+def crumbs_html(items):
+    """Visible breadcrumb trail; items as for breadcrumbs(), last one current."""
+    parts = ['<a href="/">Home</a>']
+    for i, (name, path) in enumerate(items):
+        last = i == len(items) - 1
+        if last or not path:
+            parts.append(f'<span{" aria-current=\"page\"" if last else ""}>{name}</span>')
+        else:
+            parts.append(f'<a href="{path}">{name}</a>')
+    sep = '<span aria-hidden="true">&rsaquo;</span>'
+    return f'<nav class="container crumbs" aria-label="Breadcrumb">{sep.join(parts)}</nav>'
+
+
+def faq_block(qas):
+    """(question, answer_html) pairs -> visible <details> list + FAQPage JSON-LD."""
+    import re
+    html = "\n".join(
+        f"<details><summary>{q}</summary><div>{a}</div></details>" for q, a in qas
+    )
+    data = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": re.sub(r"<[^>]+>", "", q),
+                "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", a)).strip()},
+            }
+            for q, a in qas
+        ],
+    }
+    ld = f'<script type="application/ld+json">{json.dumps(data, separators=(",", ":"))}</script>\n'
+    return f'<div class="faq">\n{html}\n</div>', ld
+
+
+def article_jsonld(headline, path, desc, image, published, modified=None, author="Amy Shaver"):
+    data = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": headline,
+        "description": desc,
+        "image": SITE + image,
+        "url": SITE + path,
+        "mainEntityOfPage": SITE + path,
+        "datePublished": published,
+        "dateModified": modified or published,
+        "author": {"@type": "Person", "name": author, "worksFor": {"@id": SITE + "/#business"}},
+        "publisher": {"@id": SITE + "/#business"},
+    }
+    return f'<script type="application/ld+json">{json.dumps(data, separators=(",", ":"))}</script>\n'
+
+
+def form_section(heading, paras_html):
+    """The same Salt CRM form as /contact, so a lead from any page lands in one place."""
+    return f"""
+  <section class="page-form" id="GetStarted">
+    <div class="container form-section-grid">
+      <div>
+        <h2>{heading}</h2>
+        {paras_html}
+        <p>Or call the office: <a href="tel:{PHONE_TEL}"><strong>{PHONE}</strong></a></p>
+      </div>
+      <div data-saltcrm-form="XmBnFY_S4ksXijQGIBO4-Q"></div>
+      <script src="https://crm.saltservicesusa.com/api/embed/XmBnFY_S4ksXijQGIBO4-Q" async></script>
+    </div>
+    <div class="container">
+      <p class="form-note">*For information about how A Happy Host communicates with you and handles your information, please review our <a href="/terms-and-condition">Terms of Service</a> and <a href="/privacy-policy">Privacy Policies</a>.</p>
+    </div>
+  </section>"""
 
 
 from legal_pages import LEGAL_PAGES
@@ -883,6 +957,7 @@ PAGES["a-happy-guest.html"] = dict(
                 [
                     "Ready to pop the question? We love to plan, prepare, and assist in helping you craft that special moment. Whether its in a cabin or on top of a mountain, we can connect you with the best photographer and go ahead of you to your special location to prepare for your arrival.",
                     'Craft the perfect proposal with our proposal experience services! Call now at <a href="tel:+18653147564"><strong>865-314-7564</strong></a>',
+                    'Still choosing a spot? Read our guide to the <a href="/blog/places-to-propose-in-gatlinburg">best places to propose in Gatlinburg</a>.',
                 ],
                 "/images/guest-proposals.jpg",
                 "Proposal setup at a cabin with a Will You Marry Me banner, rose petals, and balloons",
@@ -922,6 +997,332 @@ PAGES["a-happy-guest.html"] = dict(
         <p>Contact a concierge now to see how we can take you trip to the next level.</p>""",
         ),
     ),
+)
+
+# =============================================================== GATLINBURG (town page)
+# Targets "property management gatlinburg" and variants (440/mo, difficulty 9,
+# Semrush 26 Sep 2026). A Happy Host is NOT a management company; the page says
+# so plainly and sells the concierge option beside or instead of one. Owner
+# rules and fees checked 26 Oct 2026 against gatlinburgtn.gov (Overnight Rental
+# procedures PDF, Tourist Residency Permit page) and seviercountytn.gov (STRU
+# permit program). Re-check every year; fees and forms change.
+_GAT_PATH = "/gatlinburg"
+_GAT_DESC = "Own a cabin in Gatlinburg? Get local help with inspections, setup, repairs, decor and emergencies, without giving a manager a cut of every booking."
+_GAT_FAQ, _GAT_FAQ_LD = faq_block([
+    (
+        "Is A Happy Host a property management company?",
+        "<p>No. We don't list your cabin, take bookings or message your guests, and we don't take a percentage of your rental income. We're the local team you call for the hands-on work: setting a cabin up, inspecting it, fixing and decorating it, and showing up when something goes wrong.</p>",
+    ),
+    (
+        "Can I keep my management company and still use you?",
+        "<p>Yes, and some owners do exactly that. One owner reached out because their management company didn't have enough weekend coverage. Others use their manager for bookings and call us for holiday decor or a new-cabin setup.</p>",
+    ),
+    (
+        "What does the City of Gatlinburg require from short-term rental owners?",
+        "<p>Inside city limits, the city's own checklist lists a city business license, a Sevier County business license, a state sales tax number and a Tourist Residency Permit, which pays for a fire and building inspection of the cabin. The zoning has to allow overnight rentals before you apply. Owners also file Gatlinburg's 1.25% gross receipts tax every month; Airbnb and VRBO don't file that one for you. Confirm current requirements with the city's Finance Department at 865-436-1405.</p>",
+    ),
+    (
+        "My cabin has a Gatlinburg address but sits outside city limits. Which rules apply?",
+        "<p>Sevier County's. Plenty of cabins with a Gatlinburg mailing address are in the county, and since January 2024 those need a Short-Term Rental Unit permit from the Sevier County Fire Marshal: $250 a year for up to 12 guests, with an inspection before the permit is issued and again every year. The county's map will tell you which side of the line you're on.</p>",
+    ),
+    (
+        "How quickly can you get to a cabin in Gatlinburg?",
+        "<p>Our office is about eight miles from downtown Gatlinburg, roughly a 17-minute drive with no traffic. On a summer Saturday on the Spur, or up a steep road after snow, it takes longer, and we'll tell you honestly when to expect us. TODO: owner detail &mdash; typical response time for an emergency call in Gatlinburg.</p>",
+    ),
+])
+_GAT_SERVICE_LD = '<script type="application/ld+json">' + json.dumps({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Rental concierge services for Gatlinburg cabin owners",
+    "serviceType": "Short-term rental concierge",
+    "description": _GAT_DESC,
+    "url": SITE + _GAT_PATH,
+    "provider": {"@id": SITE + "/#business"},
+    "areaServed": {"@type": "City", "name": "Gatlinburg", "containedInPlace": {"@type": "AdministrativeArea", "name": "Sevier County, TN"}},
+}, separators=(",", ":")) + "</script>\n"
+PAGES["gatlinburg.html"] = dict(
+    title="Gatlinburg Property Management Alternative | A Happy Host",
+    desc=_GAT_DESC,
+    path=_GAT_PATH,
+    active="",
+    jsonld=breadcrumbs([("Gatlinburg", _GAT_PATH)]) + _GAT_SERVICE_LD + _GAT_FAQ_LD,
+    body=f"""<main>
+  {crumbs_html([("Gatlinburg", None)])}
+  <section class="container page-hero">
+    <div>
+      <h1>Gatlinburg cabin owners: local help without handing over a cut of every booking</h1>
+      <p class="lede">Owners searching for property management in Gatlinburg usually want one thing: someone local who'll take care of the cabin when they can't be there. A full management company is one way to get that. We're the other one. You keep your bookings and your income, and you call us for the work on the ground.</p>
+      <div class="hero-actions">
+        <a class="btn btn-dark" href="#GetStarted">Talk to us about your cabin</a>
+        <a class="btn btn-outline" href="tel:{PHONE_TEL}">Call {PHONE}</a>
+      </div>
+    </div>
+    <img src="/images/gatlinburg-cabin-entry.jpg" alt="Stone cabin entry with wreaths on the double front doors, decorated by A Happy Host" width="799" height="1000">
+  </section>
+
+  <article class="container prose">
+    <h2>What a concierge does that a management company doesn't</h2>
+    <p>A management company runs the rental for you: listings, pricing, bookings, guest messages, cleaners. For that, published rates from Smokies management companies run from about 20% to 40% of your rental revenue, and every booking pays it whether anything needed doing or not.</p>
+    <p>A concierge works the other way around. You keep running the business, or you keep the manager you already have, and we handle the jobs that need someone standing in the cabin. TODO: owner detail &mdash; how A Happy Host prices its work (per visit, per job, monthly inspection plans) and a typical starting price.</p>
+
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead><tr><th scope="col">The job</th><th scope="col">Self-managing alone</th><th scope="col">Full management company</th><th scope="col">Self-managing with A Happy Host</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Bookings, pricing, guest messages</th><td>You</td><td>The manager</td><td>You</td></tr>
+          <tr><th scope="row">Setting up a new cabin</th><td>You, from wherever you live</td><td>Depends on the company</td><td>We set it up, stock it and stage it</td></tr>
+          <tr><th scope="row">Inspections between guests</th><td>You, or nobody</td><td>Depends on the company</td><td>We inspect it and send you photos</td></tr>
+          <tr><th scope="row">Repairs and installs</th><td>You find a contractor</td><td>The manager's vendors</td><td>We send a handyman we know</td></tr>
+          <tr><th scope="row">Holiday decor</th><td>You haul it up the mountain</td><td>Depends on the company</td><td>We bring the decor and put it up</td></tr>
+          <tr><th scope="row">A 10 p.m. guest problem</th><td>Your phone rings</td><td>The manager's line</td><td>You call us; we answer 24/7</td></tr>
+          <tr><th scope="row">What you pay</th><td>Your time</td><td>A share of every booking</td><td>Only the work you ask for</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Plenty of owners mix the last two columns. If you're happy with your manager, keep them, and call us for the things they don't cover.</p>
+
+    <h2>Owning a cabin in Gatlinburg comes with its own paperwork</h2>
+    <p>The first question is which side of the city line your cabin sits on. A Gatlinburg mailing address covers a lot of mountain that isn't inside the city, so check the Sevier County map before you assume anything.</p>
+    <p><strong>Inside city limits,</strong> the city's own checklist for overnight rentals asks for a city business license, a county business license, a state sales tax number and a Tourist Residency Permit. The permit fee is $200 for up to two bedrooms plus $75 for each extra bedroom, and it pays for a fire and building inspection of the cabin. Here's the line owners miss: Airbnb and VRBO collect the sales tax and Gatlinburg's 3% hotel tax for you, but not the city's 1.25% gross receipts tax. You file that one yourself by the 20th of every month.</p>
+    <p><strong>Outside city limits,</strong> the Sevier County Fire Marshal's Short-Term Rental Unit permit applies: $250 a year for up to 12 guests, an inspection before it's issued and another every year after. The county checks smoke and carbon monoxide alarms, fire extinguishers on every level and escape routes.</p>
+    <div class="tip">
+      <p>Both applications ask who your local contact is for problems and emergencies. If you live three states away, that's the blank that matters most. TODO: owner detail &mdash; confirm whether A Happy Host can be named as that contact, and on what terms.</p>
+    </div>
+    <p>We're not your accountant or the city, so treat this as a starting list and confirm the current rules with the City of Gatlinburg Finance Department (865-436-1405) or the Sevier County Fire Marshal's office (865-774-3603). Ask us about a <a href="/rental-inspections">rental inspection</a> before the inspector comes, so missing alarms and dead batteries show up on our list instead of theirs.</p>
+
+    <h2>Why owners from out of state call us</h2>
+    <p>Most of the people who fill out our contact form live outside Tennessee. Owners write to us with the same handful of problems:</p>
+    <ul>
+      <li>They live out of state and want a local concierge on call for emergencies.</li>
+      <li>Their management company doesn't cover enough weekend hours.</li>
+      <li>They manage a lot of cabins, like the manager with 155 rentals across Sevierville, Pigeon Forge and Gatlinburg who asked us for Christmas setups on all of them.</li>
+      <li>They just closed on a cabin and need it set up and photo-ready before the first booking.</li>
+    </ul>
+    <blockquote class="tip">
+      <p>&ldquo;A Happy Host has been an absolute lifesaver on numerous occasions as I run my short-term rental in Gatlinburg from a distance!&rdquo;</p>
+      <p>&mdash; Amanda Daigle, Google review</p>
+    </blockquote>
+
+    <h2>Gatlinburg cabins, from Chalet Village to the Glades</h2>
+    <figure>
+      <img src="/images/gatlinburg-cabin-living.jpg" alt="Cabin living room with a stone fireplace and leather seating, staged by A Happy Host" loading="lazy" width="1200" height="665">
+    </figure>
+    <p>Gatlinburg rentals sit in very different places. There are the hillside cabins in Chalet Village and up Ski Mountain Road toward Ober, the homes off Historic Nature Trail near the Roaring Fork entrance, the cabins along the Glades and the Arts &amp; Crafts loop, and resort communities like Cobbly Nob out US 321. A setup at the top of a steep switchback driveway is a different job from one at a condo off the Parkway.</p>
+    <p>Getting there is the other half. Our office is in Pigeon Forge, about eight miles from downtown Gatlinburg and roughly 17 minutes with no traffic. The Gatlinburg Spur carries around 40,000 vehicles a day in summer, and October is the park's busiest month. When snow hits, as it did in January and February of 2025, the city warns of hazardous roads and stops the trolleys. That's exactly when an owner who lives six hours away needs someone already here.</p>
+
+    <h2>What we do for Gatlinburg cabins</h2>
+    <ul>
+      <li><a href="/cabinsetup">Cabin setup</a> for new owners: furniture, bedding, kitchen, supplies and the small things guests notice.</li>
+      <li><a href="/rental-inspections">Rental inspections</a> between stays.</li>
+      <li><a href="/handyman-services">Handyman services</a> from the 20-plus contractors we work with.</li>
+      <li><a href="/seasonal-decorating">Seasonal decorating</a>, so you never store a Christmas tree again.</li>
+      <li><a href="/photo-staging">Photo staging</a> before your listing photos.</li>
+      <li><a href="/a-happy-guest">Guest extras</a> like birthday and anniversary setups, which your guests can book with us directly.</li>
+    </ul>
+
+    <div class="owner-note">
+      <img src="/images/owners-rickey-amy.jpg" alt="Rickey and Amy Shaver, owners of A Happy Host" loading="lazy" width="666" height="1000">
+      <div>
+        <p>Amy bought her first short-term rental in 2005, back when owners here had very little local help, and learned the business on her own. In 2021 she and Rickey turned those years into A Happy Host. Today our team has more than 15 people and over 20 contractors we trust.</p>
+        <p><a href="/about">Read our story</a></p>
+      </div>
+    </div>
+
+    <h2>Questions Gatlinburg owners ask us</h2>
+    {_GAT_FAQ}
+  </article>
+{form_section("Tell us about your Gatlinburg cabin", "<p>Where it is, how you run it today and what you need help with. We'll call you back with what we can take off your plate.</p>")}
+</main>
+""",
+)
+
+# =============================================================== BLOG: PROPOSALS
+# Targets "places to propose in gatlinburg" and close variants (~310/mo,
+# difficulty 14-16, Mangools 15 Oct 2026). Park rules, closures and attraction
+# details checked against nps.gov and each attraction's own site 26 Oct 2026;
+# re-check the seasonal dates every fall.
+_PROPOSE_PATH = "/blog/places-to-propose-in-gatlinburg"
+_PROPOSE_DESC = "The best places to propose in Gatlinburg and the Smokies, what the park allows, what closes in winter, and how to come back to a cabin set up to celebrate."
+_PROPOSE_FAQ, _PROPOSE_FAQ_LD = faq_block([
+    (
+        "Do I need a permit to propose in the Great Smoky Mountains?",
+        "<p>The park doesn't have a permit for proposals, and its rules don't mention them. Its special use permit covers weddings, vow renewals, elopements and similar ceremonies. A quiet proposal with a ring and maybe a photographer is a different thing. If you want to be sure about your plan, the park's Special Park Uses office is at 865-410-2405.</p>",
+    ),
+    (
+        "Can I scatter rose petals or put up a sign at an overlook?",
+        "<p>Plan on no. The park's wedding permit bans flower petals, confetti, balloons, banners, signs and candles, and federal rules ban leaving anything behind. Do the petals, the letters and the balloons at your cabin instead. That's the part we set up for you.</p>",
+    ),
+    (
+        "Where can I propose in Gatlinburg in the winter?",
+        "<p>Stick to places that stay open: Gatlinburg SkyPark, Anakeesta, the Space Needle and the Ober Gatlinburg tram, plus Newfound Gap and Morton Overlook on US 441 when the weather allows. Kuwohi Road and the Roaring Fork Motor Nature Trail close for the season around November 29 and reopen in April.</p>",
+    ),
+    (
+        "Does a photographer need a permit to shoot a proposal in the park?",
+        "<p>Usually not. The park says still photography with eight or fewer people doesn't need a permit as long as it stays in public areas, uses only hand-carried gear and doesn't block anyone else. Props and sets change that.</p>",
+    ),
+    (
+        "Can A Happy Host decorate our cabin while we're out proposing?",
+        "<p>Yes. Tell us where you're staying, when you'll be gone and what you'd like waiting for you, and we'll have it ready when you walk back in. We'll need to arrange access with your host or rental company ahead of time.</p>",
+    ),
+])
+PAGES["blog/places-to-propose-in-gatlinburg.html"] = dict(
+    title="Places to Propose in Gatlinburg | A Happy Host",
+    desc=_PROPOSE_DESC,
+    path=_PROPOSE_PATH,
+    active="",
+    jsonld=breadcrumbs([("Blog", "/blog"), ("Places to propose in Gatlinburg", _PROPOSE_PATH)])
+    + article_jsonld("Places to propose in Gatlinburg (and what to plan around)", _PROPOSE_PATH, _PROPOSE_DESC,
+                     "/images/proposal-marry-me-deck.jpg", "2026-10-26")
+    + _PROPOSE_FAQ_LD,
+    body=f"""<main>
+  {crumbs_html([("Blog", "/blog"), ("Places to propose in Gatlinburg", None)])}
+  <section class="container page-hero">
+    <div>
+      <h1>Places to propose in Gatlinburg (and what to plan around)</h1>
+      <p class="lede">The best places to propose in Gatlinburg are the SkyBridge at Gatlinburg SkyPark, the gardens at Anakeesta, Morton Overlook at sunset and, from April through November, the tower at Kuwohi. Then there's the spot plenty of couples end up choosing: the deck of their own cabin.</p>
+      <p class="byline">By Amy Shaver, A Happy Host &middot; October 26, 2026</p>
+      <div class="hero-actions">
+        <a class="btn btn-dark" href="#GetStarted">Plan a proposal setup</a>
+        <a class="btn btn-outline" href="#spots">See the spots</a>
+      </div>
+    </div>
+    <img src="/images/proposal-marry-me-deck.jpg" alt="Marry Me marquee letters, red roses and rose petals set up on a cabin deck by A Happy Host" width="798" height="1000">
+  </section>
+
+  <article class="container prose">
+    <p>Most of the people who contact us are planning their Smokies trip from another state, and a proposal is the one part of a vacation you can't redo. So here's what we tell couples who call us: the spots worth the drive, the rules nobody mentions until you're standing at the overlook, and what closes before the holidays.</p>
+    <p>One thing we've noticed: several of the people who've asked us to help with a proposal wanted the same plan: ask the question somewhere with a view, then walk back into a cabin that's already decorated. It works, and part of the reason is the park's rules, which we'll get to.</p>
+
+    <h2 id="spots">The spots, and who each one suits</h2>
+
+    <div class="spot">
+      <h3>Gatlinburg SkyPark and the SkyBridge</h3>
+      <p>This is the easy choice if you want a big view with no hiking. The SkyLift chairlift carries you up from the Parkway to a park on Crockett Mountain, and the SkyBridge spans almost 700 feet with a glass section in the middle. It's also the only attraction in town that sells proposal packages. Theirs include a reserved private area at an overlook and a guaranteed sunset time, and the bigger package adds a photographer and a sign.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> package requests need at least a week's notice, and packages aren't offered Nov 25&ndash;28 or Dec 24&ndash;31. The lift stops for lightning, high wind and ice on the bridge.</li>
+        <li><b>Best for:</b> a sunset proposal with zero hiking.</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>Anakeesta: Vista Gardens and the heart Twigloo</h3>
+      <p>Anakeesta sits about 600 feet above downtown, and the new Crystal Express gondola does the climbing for you. Anakeesta's own staff point couples to the heart-shaped Twigloo in Vista Gardens. They don't sell proposal packages, but their advice is good: go at golden hour, when the light is softer and the lines are shorter, and have a second spot in mind.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> hours change day to day, and there's no Anakeesta parking lot, so budget for a paid lot nearby.</li>
+        <li><b>Best for:</b> November and December, when the holiday lights are up (November 13 through January 3 this year).</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>Morton Overlook at sunset</h3>
+      <p>For a free sunset that looks like a postcard, drive US 441 into the national park. Heading south from Gatlinburg it's the second overlook on the right after the second tunnel. The ridges turn blue in layers as the sun drops. Everyone else knows this too, so get there early enough to park and find your spot before the light goes gold.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> you'll need a park parking tag ($5 for a day) for any stop over 15 minutes.</li>
+        <li><b>Best for:</b> couples who'd rather skip the ticket booth.</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>Kuwohi (the old Clingmans Dome)</h3>
+      <p>The highest point in the Smokies went back to its Cherokee name, Kuwohi, in 2024. The tower sits at 6,643 feet, at the end of a paved half-mile walk that is much steeper than it looks. On a clear day it's the biggest view in the park. On a cloudy one you'll be standing inside the cloud, and it's often 10 to 20 degrees colder than Gatlinburg, so pack a jacket in July.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> the road is open April 1 through November 29 this year, and the parking lot fills.</li>
+        <li><b>Best for:</b> early-morning people with a backup plan for fog.</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>Newfound Gap</h3>
+      <p>Newfound Gap is on the Tennessee and North Carolina line at 5,046 feet, right on US 441, so you can pull in, park and be at the overlook in a minute. It stays open year-round when the weather allows, which makes it a winter option when Kuwohi is closed. The stone Rockefeller Memorial gives you a backdrop if the view is socked in.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> snow and ice can close US 441, so check the park's road status before you leave.</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>Cades Cove and the Primitive Baptist Church</h3>
+      <p>Cades Cove is slow on purpose: an 11-mile one-way loop through open fields with the mountains all around. The white Primitive Baptist Church, built in 1887, is the second stop and a favorite for photos. Allow two to four hours for the loop, more on a fall weekend.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> from May through September the loop is closed to cars all day on Wednesdays, and once the lots fill, cars get turned away.</li>
+        <li><b>Best for:</b> couples who'd love a quiet, old-country feel.</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>Grotto Falls</h3>
+      <p>Grotto Falls is the waterfall you can walk behind. It's about 2.6 miles round trip on the Trillium Gap Trail, off the Roaring Fork Motor Nature Trail, with roots and rocks most of the way. If you both like a hike, it's hard to beat.</p>
+      <ul class="spot-meta">
+        <li><b>Plan around:</b> Roaring Fork is closed from about November 30 to mid-April, and you can't buy a parking tag on that road, so buy it first.</li>
+      </ul>
+    </div>
+
+    <div class="spot">
+      <h3>The Gatlinburg Trail, if the dog is coming</h3>
+      <p>This four-mile round trip along the river is one of only two trails in the park where dogs are allowed on a leash. If your dog is part of the family photo, this is your trail.</p>
+    </div>
+
+    <div class="spot">
+      <h3>The Space Needle and the Ober Gatlinburg tram</h3>
+      <p>Two downtown options that stay open year-round. The Space Needle takes glass elevators to a deck more than 400 feet up, and it's lovely after dark when the Parkway is lit. The tram rides 2.1 miles up to Ober Gatlinburg (it went back to that name after a few years as Ober Mountain), with cars leaving every 20 minutes.</p>
+    </div>
+
+    <div class="tip">
+      <p><strong>Laurel Falls is still closed.</strong> Older lists put it near the top, but the trail has been closed for rebuilding since January 2025, and the park now expects it to reopen sometime in 2027.</p>
+    </div>
+
+    <h2>What the national park allows</h2>
+    <p>This is where a lot of proposal plans run into trouble. The park's permit rules for weddings ban flower petals, confetti, balloons, banners, signs, candles and any open flame, and federal rules ban leaving anything behind. No rule mentions proposals by name, but treat an overlook the way the park does: you can bring a ring and a photographer, and you can't bring a decorated set.</p>
+    <ul>
+      <li><strong>Drones are banned</strong> everywhere in the park, and at Gatlinburg SkyPark too.</li>
+      <li><strong>Photographers</strong> don't need a permit for a still shoot with eight or fewer people, hand-carried gear and public areas only.</li>
+      <li><strong>A parking tag</strong> is needed for any stop over 15 minutes: $5 a day or $15 a week. Your National Parks pass doesn't count, and digital tags aren't accepted, so print it.</li>
+    </ul>
+    <p>None of that limits what can happen back at your cabin, though.</p>
+
+    <h2>Propose out there, celebrate back at the cabin</h2>
+    <figure>
+      <img src="/images/proposal-love-bed.jpg" alt="Bed decorated with a heart of rose petals and gold LOVE balloons in a rental cabin" loading="lazy" width="750" height="1000">
+      <figcaption>A romantic cabin setup by our team.</figcaption>
+    </figure>
+    <p>While you're out at the overlook, we go to your cabin and get it ready: rose petals, balloons, marquee letters, flowers, something sweet and a bottle on ice. You walk back in engaged, and the celebration is already waiting. If you'd rather ask the question at the cabin itself, we'll set up the deck like the one at the top of this page.</p>
+    <p>We can also put you in touch with a photographer who knows the area. TODO: owner detail &mdash; which photographers Amy usually recommends, and whether she'll coordinate their timing.</p>
+    <p>The one thing we need from you: where you're staying and how we'll get in. We have to arrange access with your host or rental company, so tell us early rather than the morning of. TODO: owner detail &mdash; how much notice Amy prefers, and starting prices for a proposal setup.</p>
+
+    <h2>Timing it by season</h2>
+    <p><strong>November and December</strong> are peak proposal season. The Gatlinburg Winter Magic lights start in early November, and Anakeesta's holiday lights run November 13 through January 3. Remember that Kuwohi and Roaring Fork close around November 29, and SkyPark won't book proposal packages Christmas week.</p>
+    <p><strong>Spring and summer</strong> bring long evenings and green ridges. Watch for Wednesday car closures in Cades Cove from May through September.</p>
+    <p><strong>October</strong> has the color and the crowds. SkyPark blacks out proposal packages for the first part of the month, and every overlook is busy on weekends, so go early or go on a weekday.</p>
+
+    <h2>Questions couples ask us</h2>
+    {_PROPOSE_FAQ}
+    <p style="margin-top:26px">Planning more than a proposal? See what else we do for guests on our <a href="/a-happy-guest">A Happy Guest page</a>.</p>
+  </article>
+{form_section("Tell us your plan", "<p>Send us your dates, where you're staying and the spot you have in mind. We'll get back to you with ideas and a quote for the cabin setup.</p>")}
+</main>
+""",
+)
+
+# =============================================================== BLOG INDEX
+PAGES["blog/index.html"] = dict(
+    title="Blog: Smoky Mountain Trip and Rental Tips | A Happy Host",
+    desc="Trip-planning guides for guests and practical advice for cabin owners in Gatlinburg, Pigeon Forge and Sevierville, from the team at A Happy Host.",
+    path="/blog",
+    active="",
+    jsonld=breadcrumbs([("Blog", "/blog")]),
+    body=f"""<main>
+  {crumbs_html([("Blog", None)])}
+  <section class="container prose" style="padding:30px 24px 60px">
+    <h1 class="big-h" style="text-decoration:none">The A Happy Host blog</h1>
+    <p>Guides for guests planning a trip to the Smokies, and practical advice for the people who own the cabins.</p>
+    <ul class="post-list">
+      <li>
+        <h2><a href="{_PROPOSE_PATH}">Places to propose in Gatlinburg (and what to plan around)</a></h2>
+        <p>The best spots, what the national park allows, what closes in winter, and how to come back to a decorated cabin.</p>
+      </li>
+    </ul>
+  </section>
+</main>
+""",
 )
 
 # =============================================================== ACCESSIBILITY

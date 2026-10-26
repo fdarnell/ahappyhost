@@ -720,3 +720,72 @@ footer.site-footer { background: #fff; margin-top: 64px; }
     background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z'/></svg>") no-repeat center/contain;
   }
 }
+
+/* ---- Guide and town pages (Gatlinburg, blog posts) -----------------------
+   Long-form pages: a split hero, a readable text column, photo figures,
+   comparison table, FAQ and the CRM form at the foot. Body text here uses
+   --ink-soft rather than --muted so it clears 4.5:1 on mint and white. */
+:root { --ink-soft: #3d4441; }
+.page-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 56px 0 40px; }
+.page-hero h1 { font-size: clamp(30px, 4.2vw, 46px); font-weight: 700; line-height: 1.12; margin-bottom: 18px; }
+.page-hero .lede { font-size: 19px; color: var(--ink-soft); margin-bottom: 16px; }
+.page-hero .byline { font-size: 15px; color: var(--ink-soft); margin-bottom: 22px; }
+.page-hero .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.page-hero img { width: 100%; max-height: 560px; object-fit: cover; border-radius: 6px; }
+.crumbs { font-size: 14px; color: var(--ink-soft); padding-top: 22px; }
+.crumbs a { color: var(--ink-soft); }
+.crumbs span[aria-hidden] { margin: 0 6px; }
+
+.prose { max-width: 760px; }
+.prose h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; margin: 48px 0 14px; line-height: 1.2; }
+.prose h3 { font-size: 21px; font-weight: 700; margin: 30px 0 8px; }
+.prose p { margin-bottom: 16px; }
+.prose ul, .prose ol { margin: 0 0 18px 1.3rem; }
+.prose li { margin-bottom: 8px; }
+.prose a { text-underline-offset: 3px; }
+.prose figure { margin: 30px 0; }
+.prose figure img { width: 100%; border-radius: 6px; }
+.prose figcaption { font-size: 14.5px; color: var(--ink-soft); margin-top: 8px; }
+
+.spot { background: #fff; border-radius: 8px; padding: 26px 28px; margin: 22px 0; border: 1px solid #dfe6e2; }
+.spot h3 { margin-top: 0; }
+.spot .spot-meta { font-size: 15px; color: var(--ink-soft); margin: 10px 0 0; padding: 0; list-style: none; }
+.spot .spot-meta li { margin: 4px 0 0; }
+.spot .spot-meta b { color: var(--ink); }
+
+.tip { background: var(--aqua-pale); border-left: 4px solid var(--aqua); padding: 18px 22px; border-radius: 0 6px 6px 0; margin: 24px 0; }
+.tip p:last-child { margin-bottom: 0; }
+
+.compare-wrap { overflow-x: auto; margin: 22px 0 26px; }
+.compare { width: 100%; min-width: 560px; border-collapse: collapse; background: #fff; font-size: 16px; }
+.compare th, .compare td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid #dfe6e2; }
+.compare thead th { font-family: var(--heading); font-size: 14px; letter-spacing: .06em; text-transform: uppercase; background: var(--aqua-pale); }
+.compare tbody th { font-weight: 700; width: 24%; }
+
+.faq { margin: 10px 0 0; }
+.faq details { background: #fff; border: 1px solid #dfe6e2; border-radius: 6px; margin: 10px 0; }
+.faq summary { cursor: pointer; padding: 16px 20px; font-family: var(--heading); font-weight: 600; font-size: 17.5px; list-style-position: outside; }
+.faq details[open] summary { border-bottom: 1px solid #dfe6e2; }
+.faq details > div { padding: 14px 20px 6px; }
+
+.owner-note { display: grid; grid-template-columns: 180px 1fr; gap: 26px; align-items: center; background: #fff; border-radius: 8px; padding: 22px; margin: 34px 0; border: 1px solid #dfe6e2; }
+.owner-note img { width: 180px; height: 220px; object-fit: cover; border-radius: 6px; }
+.owner-note p:last-child { margin-bottom: 0; }
+
+.page-form { background: #fff; padding: 56px 0; margin-top: 56px; }
+.page-form .form-section-grid { align-items: start; }
+.page-form h2 { font-size: 28px; font-weight: 700; margin-bottom: 14px; }
+.page-form p { color: var(--ink-soft); margin-bottom: 14px; }
+
+.post-list { list-style: none; margin: 0; padding: 0; }
+.post-list li { background: #fff; border: 1px solid #dfe6e2; border-radius: 8px; padding: 22px 24px; margin: 0 0 16px; }
+.post-list h2 { font-size: 22px; font-weight: 700; margin: 0 0 8px; }
+.post-list p { color: var(--ink-soft); margin: 0; }
+
+@media (max-width: 860px) {
+  .page-hero { grid-template-columns: 1fr; gap: 26px; padding-top: 30px; }
+  .page-hero img { max-height: 380px; }
+  .owner-note { grid-template-columns: 1fr; }
+  .owner-note img { width: 100%; height: 260px; }
+  .spot { padding: 20px; }
+}
