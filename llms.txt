@@ -9,7 +9,7 @@
 ## Pages
 
 - [Home](https://www.ahappyhost.com/): Overview of concierge services for rental owners and guests
-- [About](https://www.ahappyhost.com/about): Family-owned story of Amy and Ricky Shaver, trusted by 700+ STR clients
+- [About](https://www.ahappyhost.com/about): Family-owned story of Amy and Rickey Shaver, trusted by 700+ STR clients
 - [Contact](https://www.ahappyhost.com/contact): Contact form, department emails, phone, and office address
 - [Cabin Setup](https://www.ahappyhost.com/cabinsetup): Take a rental from empty to guest-ready in less than a week
 - [Rental Inspections](https://www.ahappyhost.com/rental-inspections): Monthly walkthrough inspections covering plumbing, electrical, appliances, HVAC

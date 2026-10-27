@@ -5,6 +5,7 @@ Every page shares one header/nav/footer defined here, so chrome can never
 drift between pages. Run `python3 scripts/build.py` from the repo root after
 editing; it rewrites the HTML files in place.
 """
+import datetime
 import hashlib
 import json
 import os
@@ -77,7 +78,8 @@ FOOTER_SOCIAL_GLYPHS = {
 }
 
 
-def head(title, desc, path, jsonld_extra=""):
+def head(title, desc, path, jsonld_extra="", noindex=False):
+    robots = '<meta name="robots" content="noindex, follow">\n' if noindex else ""
     canonical = SITE + path
     biz = {
         "@context": "https://schema.org",
@@ -120,8 +122,9 @@ def head(title, desc, path, jsonld_extra=""):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
-<!-- TODO: paste Google Search Console verification meta tag here -->
-<meta property="og:type" content="website">
+<meta name="google-site-verification" content="em0vojTG_EeDHnHsAjw2Clk6Qe-n-XX5_sao5xWyBbM">
+<meta name="msvalidate.01" content="A8A06C9CC36C0BD027FBDCF55ED987F8">
+{robots}<meta property="og:type" content="website">
 <meta property="og:site_name" content="A Happy Host">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
@@ -414,7 +417,7 @@ PAGES["about.html"] = dict(
       <p class="eyebrow">Our Love for Serving Our Clients</p>
       <p><strong>A Happy Host, LLC</strong> is a family-owned rental concierge business located in the Great Smoky Mountains. We are dedicated to helping homeowners manage their investments from a distance. Have a rental in Sevierville, Pigeon Forge, or Gatlinburg? We are the right team for you. Reach out now and see how we can help you manage your rental property!</p>
     </div>
-    <div class="hero-split-img" style="background-image:url('/images/about-hero-owners.jpg')" role="img" aria-label="Amy and Ricky Shaver, owners of A Happy Host"></div>
+    <div class="hero-split-img" style="background-image:url('/images/about-hero-owners.jpg')" role="img" aria-label="Amy and Rickey Shaver, owners of A Happy Host"></div>
   </section>
 
   <section class="band band-aqua features-band">
@@ -1007,6 +1010,10 @@ PAGES["404.html"] = dict(
 
 
 # =============================================================== LEGAL / POLICY
+# Paperwork for team members and existing clients: reachable by link, kept out of
+# search results, the sitemap and llms.txt.
+PRIVATE_PATHS = {"/handbook", "/nda/non-compete", "/terms-and-condition", "/service-rate-update-2025"}
+
 # Transcribed from the live Duda site so the rebuild publishes the same
 # handbook, agreements and policies the client already has online.
 for _slug, _pg in LEGAL_PAGES.items():
@@ -1018,6 +1025,7 @@ for _slug, _pg in LEGAL_PAGES.items():
         active="",
         jsonld="",
         body=_pg["body"],
+        noindex=_pg["path"] in PRIVATE_PATHS,
     )
 
 
@@ -1030,7 +1038,7 @@ def build():
             titles.add(page["title"])
             descs.add(page["desc"])
         html = (
-            head(page["title"], page["desc"], page["path"], page["jsonld"])
+            head(page["title"], page["desc"], page["path"], page["jsonld"], page.get("noindex", False))
             + header(page["active"])
             + page["body"]
             + footer()
@@ -1040,15 +1048,26 @@ def build():
         out_path.write_text(html)
         print(f"wrote {fname} ({len(html)} bytes)")
 
-    # sitemap.xml
-    urls = [p["path"] for p in PAGES.values() if p["path"] != "/404"]
+    # sitemap.xml, with lastmod that only changes when a page's content changes
+    lm_file = ROOT / ".lastmod.json"
+    lastmod = json.loads(lm_file.read_text()) if lm_file.exists() else {}
+    today = datetime.date.today().isoformat()
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for u in urls:
-        loc = SITE + ("" if u == "/" else u) + ("/" if u == "/" else "")
-        sm.append(f"  <url><loc>{SITE + u if u != '/' else SITE + '/'}</loc></url>")
+    for fname, page in PAGES.items():
+        u = page["path"]
+        if u == "/404" or page.get("noindex"):
+            continue
+        digest = hashlib.sha256((page["title"] + page["desc"] + page["body"]).encode()).hexdigest()[:16]
+        prev = lastmod.get(u, {})
+        if prev.get("hash") != digest:
+            prev = {"hash": digest, "date": today}
+            lastmod[u] = prev
+        loc = SITE + "/" if u == "/" else SITE + u
+        sm.append(f"  <url><loc>{loc}</loc><lastmod>{prev['date']}</lastmod></url>")
     sm.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(sm) + "\n")
+    lm_file.write_text(json.dumps(lastmod, indent=2, sort_keys=True) + "\n")
     print("wrote sitemap.xml")
 
 
